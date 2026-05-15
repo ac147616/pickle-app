@@ -38,21 +38,6 @@ export default function Login() {
     // flex flex-col centers everything vertically and horizontally
     <div className="min-h-screen bg-[#f9e9da] flex flex-col items-center justify-center px-5 py-12">
 
-      {/* ── LOGO BLOCK ── */}
-      {/* Dark green pill containing the PICK/e wordmark */}
-      <div className="bg-[#0c3120] px-8 py-4 rounded-2xl mb-3">
-        <span className="text-[#f9e9da] text-4xl tracking-widest"
-          style={{ fontFamily: 'Belleza, sans-serif' }}>
-          PICK/e
-        </span>
-      </div>
-
-      {/* Tagline sitting just below the logo */}
-      <p className="text-[#0c3120] text-sm mt-3 mb-10 text-center opacity-60"
-        style={{ fontFamily: 'DM Sans, sans-serif' }}>
-        Smarter freight. Shared journeys.
-      </p>
-
       {/* ── HEADING ── */}
       <h1 className="text-[#0c3120] text-2xl mb-1 text-center"
         style={{ fontFamily: 'Belleza, sans-serif' }}>
@@ -60,7 +45,7 @@ export default function Login() {
       </h1>
 
       {/* Subtitle explaining this is a demo tap-to-enter login */}
-      <p className="text-sm text-center text-gray-400 mb-8"
+      <p className="text-[#0c3120] text-sm mt-3 mb-10 text-center opacity-60"
         style={{ fontFamily: 'DM Sans, sans-serif' }}>
         Tap a profile to explore the platform
       </p>
@@ -108,12 +93,6 @@ export default function Login() {
           </button>
         ))}
       </div>
-
-      {/* ── FOOTER ── */}
-      {/* Small note at the bottom clarifying this is a demo */}
-      <p className="text-xs text-gray-300 mt-10 text-center">
-            PICK/e © 2026
-      </p>
 
     </div>
   )
