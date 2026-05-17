@@ -40,7 +40,7 @@ const businessData = {
         },
         {
           id: 3,
-          route: 'Auckland → Tauranga',
+          route: 'AKL → Tauranga',
           status: 'Delivered',
           date: '3 May 2026',
           price: '$112.00',
