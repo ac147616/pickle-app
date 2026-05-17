@@ -21,32 +21,41 @@ const businessData = {
         // This is what they would have paid with a traditional courier
         traditional: 780,
     },
-  recentActivity: [
-    {
-      id: 1,
-      route: 'Auckland → Wellington',
-      status: 'In Transit',
-      date: '14 May 2026',
-      price: '$136.50',
-      statusColor: 'bg-green-500',
-    },
-    {
-      id: 2,
-      route: 'Hamilton → Napier',
-      status: 'Delivered',
-      date: '10 May 2026',
-      price: '$98.00',
-      statusColor: 'bg-gray-400',
-    },
-    {
-      id: 3,
-      route: 'AKL → Tauranga',
-      status: 'Delivered',
-      date: '3 May 2026',
-      price: '$112.00',
-      statusColor: 'bg-gray-400',
-    },
-  ],
+    recentActivity: [
+        {
+          id: 1,
+          route: 'Auckland → Wellington',
+          status: 'In Transit',
+          date: '14 May 2026',
+          price: '$136.50',
+          statusColor: 'bg-green-500',
+        },
+        {
+          id: 2,
+          route: 'Hamilton → Napier',
+          status: 'Delivered',
+          date: '10 May 2026',
+          price: '$98.00',
+          statusColor: 'bg-gray-400',
+        },
+        {
+          id: 3,
+          route: 'Auckland → Tauranga',
+          status: 'Delivered',
+          date: '3 May 2026',
+          price: '$112.00',
+          statusColor: 'bg-gray-400',
+        },
+        // Fourth dummy activity
+        {
+          id: 4,
+          route: 'Wellington → Christchurch',
+          status: 'Delivered',
+          date: '28 Apr 2026',
+          price: '$154.00',
+          statusColor: 'bg-gray-400',
+        },
+      ],
 }
 
 export default function Dashboard() {
