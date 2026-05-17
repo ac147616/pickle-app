@@ -2,6 +2,9 @@
 // when a button is clicked for example
 import { useNavigate } from 'react-router-dom'
 
+// Importing specific icons from lucide-react for each account type
+import { Truck, Store, User } from 'lucide-react'
+
 // These are the three dummy accounts judges can tap into
 // Each has an id that gets passed into the URL when selected
 const accounts = [
@@ -9,23 +12,23 @@ const accounts = [
     id: 'truck',
     name: 'Kiwi Transport Co.',
     role: 'Truck Operator',
-    // This description shows under the name on the card
     description: 'List spare truck space, manage bookings and track earnings on your routes.',
-    emoji: '🚛',
+    // icon is now a Lucide component instead of an emoji
+    icon: Truck,
   },
   {
     id: 'business',
     name: "Molly's Bakery",
     role: 'Small Business',
     description: 'Find affordable freight space for your deliveries across New Zealand.',
-    emoji: '🏪',
+    icon: Store,
   },
   {
     id: 'individual',
     name: 'Sarah Chen',
     role: 'Individual',
     description: 'Move personal items or single loads between cities, quickly and cheaply.',
-    emoji: '📦',
+    icon: User,
   },
 ]
 
@@ -44,7 +47,7 @@ export default function Login() {
         Choose your account
       </h1>
 
-      {/* Subtitle explaining this is a demo tap-to-enter login */}
+      {/* Subtitle explaining this is a tap-to-enter login */}
       <p className="text-[#0c3120] text-sm mt-3 mb-10 text-center opacity-60"
         style={{ fontFamily: 'DM Sans, sans-serif' }}>
         Tap a profile to explore the platform
@@ -55,43 +58,51 @@ export default function Login() {
       <div className="flex flex-col gap-4 w-full max-w-sm">
 
         {/* Loop through each account and render a card for it */}
-        {accounts.map((account) => (
-          <button
-            key={account.id}
-            // When tapped, navigate to that account's dashboard
-            // The account id becomes part of the URL e.g. /dashboard/truck
-            onClick={() => navigate(`/dashboard/${account.id}`)}
-            className="bg-white border-2 border-transparent rounded-2xl p-5 text-left shadow-sm transition-all duration-200 hover:border-[#0c3120] hover:shadow-md active:scale-95"
-          >
-            {/* Top row: emoji icon + name and role badge */}
-            <div className="flex items-center gap-4">
+        {accounts.map((account) => {
 
-              {/* Large emoji acting as the account avatar */}
-              <div className="text-4xl">{account.emoji}</div>
+          // This pulls out the icon component so you can render it below
+          const IconComponent = account.icon
 
-              <div>
-                {/* Account name in Belleza */}
-                <p className="text-[#0c3120] text-lg leading-tight"
-                  style={{ fontFamily: 'Belleza, sans-serif' }}>
-                  {account.name}
-                </p>
+          return (
+            <button
+              key={account.id}
+              // When tapped, navigate to that account's dashboard
+              // The account id becomes part of the URL e.g. /dashboard/truck
+              onClick={() => navigate(`/dashboard/${account.id}`)}
+              className="bg-white border-2 border-transparent rounded-2xl p-5 text-left shadow-sm transition-all duration-200 hover:border-[#0c3120] hover:shadow-md active:scale-95"
+            >
+              {/* Top row: icon + name and role badge */}
+              <div className="flex items-center gap-4">
 
-                {/* Small dark green pill showing the role type */}
-                <span className="inline-block text-xs bg-[#0c3120] text-[#f9e9da] rounded-full px-2 py-0.5 mt-1"
-                  style={{ fontFamily: 'DM Sans, sans-serif' }}>
-                  {account.role}
-                </span>
+                {/* Icon inside a dark green circle */}
+                <div className="bg-[#0c3120] rounded-full p-3 flex items-center justify-center">
+                  <IconComponent size={22} color="#f9e9da" />
+                </div>
+
+                <div>
+                  {/* Account name in Belleza */}
+                  <p className="text-[#0c3120] text-lg leading-tight"
+                    style={{ fontFamily: 'Belleza, sans-serif' }}>
+                    {account.name}
+                  </p>
+
+                  {/* Small dark green pill showing the role type */}
+                  <span className="inline-block text-xs bg-[#0c3120] text-[#f9e9da] rounded-full px-2 py-0.5 mt-1"
+                    style={{ fontFamily: 'DM Sans, sans-serif' }}>
+                    {account.role}
+                  </span>
+                </div>
               </div>
-            </div>
 
-            {/* Description text below the name */}
-            <p className="text-sm text-gray-400 mt-3 leading-relaxed"
-              style={{ fontFamily: 'DM Sans, sans-serif' }}>
-              {account.description}
-            </p>
+              {/* Description text below the name */}
+              <p className="text-sm text-gray-400 mt-3 leading-relaxed"
+                style={{ fontFamily: 'DM Sans, sans-serif' }}>
+                {account.description}
+              </p>
 
-          </button>
-        ))}
+            </button>
+          )
+        })}
       </div>
 
     </div>

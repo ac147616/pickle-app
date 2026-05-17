@@ -2,12 +2,13 @@
 // useNavigate lets you move between pages
 import { useParams, useNavigate } from 'react-router-dom'
 
+// Importing all icons used in this screen
+import { Search, Package, Home, User, Truck } from 'lucide-react'
+
 // This is the dummy data for Molly's Bakery dashboard
-// Later we'll have different data for each account type
 const businessData = {
   name: "Molly's Bakery",
   role: 'Small Business',
-  emoji: '🏪',
   stats: [
     { label: 'Active Bookings', value: '2' },
     { label: 'CO₂ Saved (kg)', value: '840' },
@@ -58,7 +59,7 @@ export default function Dashboard() {
     // Full screen cream background with bottom padding for the nav bar
     <div className="min-h-screen bg-[#f9e9da] pb-24">
 
-      {/* ── TOP NAV BAR ── */}
+      {/* ── TOP HEADER ── */}
       <div className="bg-[#0c3120] px-5 pt-10 pb-6">
 
         {/* Top row: greeting on left, logo on right */}
@@ -83,7 +84,7 @@ export default function Dashboard() {
         </div>
 
         {/* ── STATS ROW ── */}
-        {/* Horizontal scrollable row of stat pills */}
+        {/* Horizontal scrollable row of stat cards */}
         <div className="flex gap-3 overflow-x-auto pb-1">
           {data.stats.map((stat, index) => (
             <div
@@ -116,23 +117,28 @@ export default function Dashboard() {
         {/* Two big action buttons side by side */}
         <div className="grid grid-cols-2 gap-3 mb-6">
 
-          {/* Book Delivery Space button */}
+          {/* Book Delivery Space button — dark green filled */}
           <button
             onClick={() => navigate(`/find/${accountId}`)}
             className="bg-[#0c3120] text-[#f9e9da] rounded-2xl p-4 text-left active:scale-95 transition-all duration-150 shadow-sm"
           >
-            <div className="text-2xl mb-2">🔍</div>
+            {/* Icon sitting above the label */}
+            <div className="mb-2">
+              <Search size={22} color="#f9e9da" />
+            </div>
             <p className="text-sm leading-tight"
               style={{ fontFamily: 'Belleza, sans-serif' }}>
               Book Delivery Space
             </p>
           </button>
 
-          {/* My Trips button */}
+          {/* My Trips button — white outlined */}
           <button
             className="bg-white text-[#0c3120] border-2 border-[#0c3120] rounded-2xl p-4 text-left active:scale-95 transition-all duration-150 shadow-sm"
           >
-            <div className="text-2xl mb-2">📦</div>
+            <div className="mb-2">
+              <Package size={22} color="#0c3120" />
+            </div>
             <p className="text-sm leading-tight"
               style={{ fontFamily: 'Belleza, sans-serif' }}>
               My Trips
@@ -153,16 +159,24 @@ export default function Dashboard() {
               key={item.id}
               className="bg-white rounded-2xl px-4 py-4 shadow-sm flex items-center justify-between"
             >
-              {/* Left side: route and date */}
-              <div>
-                <p className="text-[#0c3120] text-sm font-medium"
-                  style={{ fontFamily: 'DM Sans, sans-serif' }}>
-                  {item.route}
-                </p>
-                <p className="text-gray-400 text-xs mt-0.5"
-                  style={{ fontFamily: 'DM Sans, sans-serif' }}>
-                  {item.date}
-                </p>
+              {/* Left side: truck icon + route and date */}
+              <div className="flex items-center gap-3">
+
+                {/* Small truck icon to the left of each delivery */}
+                <div className="bg-[#f9e9da] rounded-full p-2">
+                  <Truck size={16} color="#0c3120" />
+                </div>
+
+                <div>
+                  <p className="text-[#0c3120] text-sm font-medium"
+                    style={{ fontFamily: 'DM Sans, sans-serif' }}>
+                    {item.route}
+                  </p>
+                  <p className="text-gray-400 text-xs mt-0.5"
+                    style={{ fontFamily: 'DM Sans, sans-serif' }}>
+                    {item.date}
+                  </p>
+                </div>
               </div>
 
               {/* Right side: price and status badge */}
@@ -189,9 +203,9 @@ export default function Dashboard() {
       {/* Fixed to the bottom of the screen like a real app */}
       <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 px-8 py-4 flex justify-between items-center">
 
-        {/* Home tab - active */}
+        {/* Home tab — active state shown with dark green color */}
         <button className="flex flex-col items-center gap-1">
-          <span className="text-xl">🏠</span>
+          <Home size={20} color="#0c3120" />
           <span className="text-[10px] text-[#0c3120] font-medium"
             style={{ fontFamily: 'DM Sans, sans-serif' }}>
             Home
@@ -202,7 +216,7 @@ export default function Dashboard() {
         <button
           onClick={() => navigate(`/find/${accountId}`)}
           className="flex flex-col items-center gap-1">
-          <span className="text-xl">🔍</span>
+          <Search size={20} color="#9ca3af" />
           <span className="text-[10px] text-gray-400"
             style={{ fontFamily: 'DM Sans, sans-serif' }}>
             Find
@@ -211,7 +225,7 @@ export default function Dashboard() {
 
         {/* Trips tab */}
         <button className="flex flex-col items-center gap-1">
-          <span className="text-xl">📦</span>
+          <Package size={20} color="#9ca3af" />
           <span className="text-[10px] text-gray-400"
             style={{ fontFamily: 'DM Sans, sans-serif' }}>
             My Trips
@@ -220,7 +234,7 @@ export default function Dashboard() {
 
         {/* Account tab */}
         <button className="flex flex-col items-center gap-1">
-          <span className="text-xl">👤</span>
+          <User size={20} color="#9ca3af" />
           <span className="text-[10px] text-gray-400"
             style={{ fontFamily: 'DM Sans, sans-serif' }}>
             Account
