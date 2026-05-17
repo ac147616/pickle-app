@@ -1,10 +1,6 @@
 // useParams lets you read the accountId from the URL
 // useNavigate lets you move between pages
 import { useParams, useNavigate } from 'react-router-dom'
-
-// Recharts gives you the donut ring chart
-import { PieChart, Pie, Cell } from 'recharts'
-
 // Importing all icons used in this screen
 import { FaTruck, FaSearch, FaBox, FaHome, FaUser } from 'react-icons/fa'
 
@@ -92,64 +88,55 @@ export default function Dashboard() {
           </span>
         </div>
 
-        {/* ── VISUAL STATS ROW ── */}
+       {/* ── VISUAL STATS ROW ── */}
         <div className="flex items-center gap-4 bg-white bg-opacity-10 rounded-2xl px-4 py-3">
 
         {/* ── DOUBLE DONUT RING ── */}
-        {/* Outer ring: active deliveries as % of total */}
-        {/* Inner ring: freight cost saved as % of traditional cost */}
-        <div className="relative flex items-center justify-center flex-shrink-0">
-        <PieChart width={100} height={100}>
+        <div className="relative flex items-center justify-center flex-shrink-0 w-[100px] h-[100px]">
+        <svg width="100" height="100" viewBox="0 0 100 100">
 
-            {/* ── OUTER RING — active deliveries ratio ── */}
-            <Pie
-            data={[
-                // Green slice: active deliveries out of total
-                { value: 2 },
-                // Remaining slice: completed
-                { value: 12 - 2 },
-            ]}
-            cx={45}
-            cy={45}
-            innerRadius={42}
-            outerRadius={48}
-            startAngle={90}
-            endAngle={-270}
-            dataKey="value"
-            // strokeWidth 0 removes the glitch lines between slices
-            strokeWidth={0}
-            isAnimationActive={false}
-            >
-            {/* Active portion in green */}
-            <Cell fill="#4ade80" />
-            {/* Remaining in faded white */}
-            <Cell fill="rgba(255,255,255,0.1)" />
-            </Pie>
+            {/* Outer ring track */}
+            <circle
+            cx="50" cy="50" r="45"
+            fill="none"
+            stroke="rgba(255,255,255,0.1)"
+            strokeWidth="5"
+            />
 
-            {/* ── INNER RING — freight savings ── */}
-            <Pie
-            data={[
-                { value: data.savings.amount },
-                { value: data.savings.traditional - data.savings.amount },
-            ]}
-            cx={45}
-            cy={45}
-            innerRadius={28}
-            outerRadius={38}
-            startAngle={90}
-            endAngle={-270}
-            dataKey="value"
-            strokeWidth={0}
-            isAnimationActive={false}
-            >
-            <Cell fill="#f9e9da" />
-            <Cell fill="rgba(255,255,255,0.1)" />
-            </Pie>
+            {/* Outer ring - green - active deliveries ratio */}
+            <circle
+            cx="50" cy="50" r="45"
+            fill="none"
+            stroke="#4ade80"
+            strokeWidth="5"
+            strokeLinecap="round"
+            strokeDasharray={`${(2 / 12) * 282.7} 282.7`}
+            transform="rotate(-90 50 50)"
+            />
 
-        </PieChart>
+            {/* Inner ring track */}
+            <circle
+            cx="50" cy="50" r="33"
+            fill="none"
+            stroke="rgba(255,255,255,0.1)"
+            strokeWidth="8"
+            />
 
-        {/* Savings percentage in center of inner ring */}
-        <div className="absolute flex flex-col items-center justify-center">
+            {/* Inner ring - cream - freight savings ratio */}
+            <circle
+            cx="50" cy="50" r="33"
+            fill="none"
+            stroke="#f9e9da"
+            strokeWidth="8"
+            strokeLinecap="round"
+            strokeDasharray={`${(data.savings.amount / data.savings.traditional) * 207.3} 207.3`}
+            transform="rotate(-90 50 50)"
+            />
+
+        </svg>
+
+        {/* Percentage label — only one, centered inside inner ring */}
+        <div className="absolute flex items-center justify-center">
             <span className="text-[#f9e9da] text-sm font-bold"
             style={{ fontFamily: 'Belleza, sans-serif' }}>
             {Math.round((data.savings.amount / data.savings.traditional) * 100)}%
@@ -160,31 +147,35 @@ export default function Dashboard() {
         {/* ── RIGHT SIDE STATS ── */}
         <div className="flex flex-col gap-2 flex-1">
 
-        {/* Freight saved */}
-        <div>
+        {/* Freight saved and CO2 on same row */}
+        <div className="flex gap-4 items-start">
+            <div>
             <p className="text-[#f9e9da] text-lg leading-none"
-            style={{ fontFamily: 'Belleza, sans-serif' }}>
-            ${data.savings.amount}
+                style={{ fontFamily: 'Belleza, sans-serif' }}>
+                ${data.savings.amount}
             </p>
             <p className="text-[#f9e9da] text-[10px] opacity-50 mt-0.5"
-            style={{ fontFamily: 'DM Sans, sans-serif' }}>
-            Freight saved
+                style={{ fontFamily: 'DM Sans, sans-serif' }}>
+                Freight saved
             </p>
-        </div>
+            </div>
 
-        {/* CO2 saved */}
-        <div>
+            {/* Thin vertical divider */}
+            <div className="w-px h-8 bg-white opacity-20"></div>
+
+            <div>
             <p className="text-[#f9e9da] text-lg leading-none"
-            style={{ fontFamily: 'Belleza, sans-serif' }}>
-            {data.co2.saved}kg
+                style={{ fontFamily: 'Belleza, sans-serif' }}>
+                {data.co2.saved}kg
             </p>
             <p className="text-[#f9e9da] text-[10px] opacity-50 mt-0.5"
-            style={{ fontFamily: 'DM Sans, sans-serif' }}>
-            CO₂ saved
+                style={{ fontFamily: 'DM Sans, sans-serif' }}>
+                CO₂ saved
             </p>
+            </div>
         </div>
 
-        {/* Active deliveries with green dot */}
+        {/* Active deliveries */}
         <div className="flex items-center gap-1.5">
             <div className="w-1.5 h-1.5 rounded-full bg-green-400"></div>
             <p className="text-[#f9e9da] text-[10px] opacity-70"
