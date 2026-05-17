@@ -223,6 +223,7 @@ export default function Dashboard() {
           </button>
 
           <button
+            onClick={() => navigate(`/mytrips/${accountId}`)}
             className="bg-white text-[#0c3120] border-2 border-[#0c3120] rounded-2xl px-4 py-3 flex items-center gap-2 active:scale-95 transition-all duration-150 shadow-sm"
           >
             <FaBox size={14} color="#0c3120" />
@@ -300,7 +301,9 @@ export default function Dashboard() {
           </span>
         </button>
 
-        <button className="flex flex-col items-center gap-1">
+        <button
+          onClick={() => navigate(`/mytrips/${accountId}`)}
+          className="flex flex-col items-center gap-1">
           <FaBox size={20} color="#9ca3af" />
           <span className="text-[10px] text-gray-400"
             style={{ fontFamily: 'DM Sans, sans-serif' }}>
