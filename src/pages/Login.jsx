@@ -1,36 +1,34 @@
 // useNavigate lets you move between pages programmatically
 // when a button is clicked for example
 import { useNavigate } from 'react-router-dom'
-
-// Importing specific icons from lucide-react for each account type
-import { Truck, Store, User } from 'lucide-react'
+// React Icons - Fa icons are fully filled/solid
+import { FaTruck, FaStore, FaUser } from 'react-icons/fa'
 
 // These are the three dummy accounts judges can tap into
 // Each has an id that gets passed into the URL when selected
 const accounts = [
-  {
-    id: 'truck',
-    name: 'Kiwi Transport Co.',
-    role: 'Truck Operator',
-    description: 'List spare truck space, manage bookings and track earnings on your routes.',
-    // icon is now a Lucide component instead of an emoji
-    icon: Truck,
-  },
-  {
-    id: 'business',
-    name: "Molly's Bakery",
-    role: 'Small Business',
-    description: 'Find affordable freight space for your deliveries across New Zealand.',
-    icon: Store,
-  },
-  {
-    id: 'individual',
-    name: 'Sarah Chen',
-    role: 'Individual',
-    description: 'Move personal items or single loads between cities, quickly and cheaply.',
-    icon: User,
-  },
-]
+    {
+      id: 'truck',
+      name: 'Kiwi Transport Co.',
+      role: 'Truck Operator',
+      description: 'List spare truck space, manage bookings and track earnings on your routes.',
+      icon: FaTruck,
+    },
+    {
+      id: 'business',
+      name: "Molly's Bakery",
+      role: 'Small Business',
+      description: 'Find affordable freight space for your deliveries across New Zealand.',
+      icon: FaStore,
+    },
+    {
+      id: 'individual',
+      name: 'Sarah Chen',
+      role: 'Individual',
+      description: 'Move personal items or single loads between cities, quickly and cheaply.',
+      icon: FaUser,
+    },
+  ]
 
 export default function Login() {
   // useNavigate gives you a function to change the page
@@ -74,9 +72,9 @@ export default function Login() {
               {/* Top row: icon + name and role badge */}
               <div className="flex items-center gap-4">
 
-                {/* Icon inside a dark green circle */}
-                <div className="bg-[#0c3120] rounded-full p-3 flex items-center justify-center">
-                  <IconComponent size={22} color="#f9e9da" />
+                {/* Filled icon, dark green, no background */}
+                <div className="flex items-center justify-center">
+                    <IconComponent size={28} color="#0c3120" />
                 </div>
 
                 <div>

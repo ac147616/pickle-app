@@ -3,7 +3,7 @@
 import { useParams, useNavigate } from 'react-router-dom'
 
 // Importing all icons used in this screen
-import { Search, Package, Home, User, Truck } from 'lucide-react'
+import { FaTruck, FaSearch, FaBox, FaHome, FaUser } from 'react-icons/fa'
 
 // This is the dummy data for Molly's Bakery dashboard
 const businessData = {
@@ -68,7 +68,7 @@ export default function Dashboard() {
             {/* Greeting with the account name */}
             <p className="text-[#f9e9da] text-xs opacity-60"
               style={{ fontFamily: 'DM Sans, sans-serif' }}>
-              Good morning 👋
+              Good morning,
             </p>
             <h1 className="text-[#f9e9da] text-xl"
               style={{ fontFamily: 'Belleza, sans-serif' }}>
@@ -124,7 +124,7 @@ export default function Dashboard() {
           >
             {/* Icon sitting above the label */}
             <div className="mb-2">
-              <Search size={22} color="#f9e9da" />
+                <FaSearch size={22} color="#f9e9da" />
             </div>
             <p className="text-sm leading-tight"
               style={{ fontFamily: 'Belleza, sans-serif' }}>
@@ -137,7 +137,7 @@ export default function Dashboard() {
             className="bg-white text-[#0c3120] border-2 border-[#0c3120] rounded-2xl p-4 text-left active:scale-95 transition-all duration-150 shadow-sm"
           >
             <div className="mb-2">
-              <Package size={22} color="#0c3120" />
+                <FaBox size={22} color="#0c3120" />
             </div>
             <p className="text-sm leading-tight"
               style={{ fontFamily: 'Belleza, sans-serif' }}>
@@ -147,10 +147,9 @@ export default function Dashboard() {
         </div>
 
         {/* ── RECENT ACTIVITY ── */}
-        <h2 className="text-[#0c3120] text-lg mb-3"
-          style={{ fontFamily: 'Belleza, sans-serif' }}>
-          Recent Activity
-        </h2>
+        <div className="bg-[#f9e9da] rounded-full p-2">
+            <FaTruck size={16} color="#0c3120" />
+        </div>
 
         {/* List of recent deliveries */}
         <div className="flex flex-col gap-3">
@@ -205,40 +204,40 @@ export default function Dashboard() {
 
         {/* Home tab — active state shown with dark green color */}
         <button className="flex flex-col items-center gap-1">
-          <Home size={20} color="#0c3120" />
-          <span className="text-[10px] text-[#0c3120] font-medium"
+        <FaHome size={20} color="#0c3120" />
+        <span className="text-[10px] text-[#0c3120] font-medium"
             style={{ fontFamily: 'DM Sans, sans-serif' }}>
             Home
-          </span>
+        </span>
         </button>
 
         {/* Find tab */}
         <button
-          onClick={() => navigate(`/find/${accountId}`)}
-          className="flex flex-col items-center gap-1">
-          <Search size={20} color="#9ca3af" />
-          <span className="text-[10px] text-gray-400"
+        onClick={() => navigate(`/find/${accountId}`)}
+        className="flex flex-col items-center gap-1">
+        <FaSearch size={20} color="#9ca3af" />
+        <span className="text-[10px] text-gray-400"
             style={{ fontFamily: 'DM Sans, sans-serif' }}>
             Find
-          </span>
+        </span>
         </button>
 
         {/* Trips tab */}
         <button className="flex flex-col items-center gap-1">
-          <Package size={20} color="#9ca3af" />
-          <span className="text-[10px] text-gray-400"
+        <FaBox size={20} color="#9ca3af" />
+        <span className="text-[10px] text-gray-400"
             style={{ fontFamily: 'DM Sans, sans-serif' }}>
             My Trips
-          </span>
+        </span>
         </button>
 
         {/* Account tab */}
         <button className="flex flex-col items-center gap-1">
-          <User size={20} color="#9ca3af" />
-          <span className="text-[10px] text-gray-400"
+        <FaUser size={20} color="#9ca3af" />
+        <span className="text-[10px] text-gray-400"
             style={{ fontFamily: 'DM Sans, sans-serif' }}>
             Account
-          </span>
+        </span>
         </button>
 
       </div>
