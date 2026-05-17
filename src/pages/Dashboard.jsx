@@ -146,11 +146,11 @@ export default function Dashboard() {
           </button>
         </div>
 
-        {/* ── RECENT ACTIVITY ── */}
-        <div className="bg-[#f9e9da] rounded-full p-2">
-            <FaTruck size={16} color="#0c3120" />
-        </div>
-
+        <h2 className="text-[#0c3120] text-lg mb-3"
+        style={{ fontFamily: 'Belleza, sans-serif' }}>
+            Recent Activity
+        </h2>
+        
         {/* List of recent deliveries */}
         <div className="flex flex-col gap-3">
           {data.recentActivity.map((item) => (
@@ -163,7 +163,7 @@ export default function Dashboard() {
 
                 {/* Small truck icon to the left of each delivery */}
                 <div className="bg-[#f9e9da] rounded-full p-2">
-                  <Truck size={16} color="#0c3120" />
+                <FaTruck size={16} color="#0c3120" />
                 </div>
 
                 <div>
