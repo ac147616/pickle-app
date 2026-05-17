@@ -68,7 +68,7 @@ export default function Account() {
 
         {/* Profile avatar circle with initial */}
         <div className="flex flex-col items-center">
-          <div className="bg-[#f9e9da] rounded-full w-16 h-16 flex items-center justify-center mb-3">
+          <div className="bg-[#f9e9da] rounded-full w-16 h-16 flex items-center justify-center mb-3 px-3">
             <span className="text-[#0c3120] text-2xl"
               style={{ fontFamily: 'Belleza, sans-serif' }}>
               {data.name.charAt(0)}
@@ -80,7 +80,7 @@ export default function Account() {
             style={{ fontFamily: 'Belleza, sans-serif' }}>
             {data.name}
           </h1>
-          <span className="text-xs bg-white bg-opacity-10 text-[#f9e9da] rounded-full px-3 py-1 mb-2"
+          <span className="text-xs bg-white bg-opacity-10 text-[#f9e9da] rounded-full px-3 py-1.5 mb-2"
             style={{ fontFamily: 'DM Sans, sans-serif' }}>
             {data.role}
           </span>
@@ -195,7 +195,7 @@ export default function Account() {
           style={{ fontFamily: 'Belleza, sans-serif' }}
         >
           <FaSignOutAlt size={14} color="#0c3120" />
-          Switch Account
+          Log Out
         </button>
 
       </div>
