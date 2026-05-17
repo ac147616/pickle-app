@@ -5,6 +5,7 @@ import { Routes, Route } from 'react-router-dom'
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
 import FindSpace from './pages/FindSpace'
+import Booking from './pages/Booking'
 
 function App() {
   return (
@@ -17,6 +18,10 @@ function App() {
 
       {/* Find space screen */}
       <Route path="/find/:accountId" element={<FindSpace />} />
+
+      {/* Booking confirmation screen */}
+      {/* tripId tells it which trip the user selected */}
+      <Route path="/booking/:accountId/:tripId" element={<Booking />} />
     </Routes>
   )
 }
