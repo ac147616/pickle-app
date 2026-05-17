@@ -6,7 +6,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 
 // Icons used on this screen
-import { FaArrowLeft, FaStar, FaTruck } from 'react-icons/fa'
+import { FaArrowLeft, FaStar, FaTruck, FaHome, FaSearch, FaBox, FaUser } from 'react-icons/fa'
 
 // Dummy trip results that show after searching
 // In a real app these would come from the database
@@ -302,6 +302,50 @@ export default function FindSpace() {
           </div>
         )}
       </div>
+      {/* ── BOTTOM NAV ── */}
+      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 px-8 py-4 flex justify-between items-center">
+
+        <button
+          onClick={() => navigate(`/dashboard/${accountId}`)}
+          className="flex flex-col items-center gap-1">
+          <FaHome size={20} color="#9ca3af" />
+          <span className="text-[10px] text-gray-400"
+            style={{ fontFamily: 'DM Sans, sans-serif' }}>
+            Home
+          </span>
+        </button>
+
+        {/* Find is active on this screen */}
+        <button className="flex flex-col items-center gap-1">
+          <FaSearch size={20} color="#0c3120" />
+          <span className="text-[10px] text-[#0c3120] font-medium"
+            style={{ fontFamily: 'DM Sans, sans-serif' }}>
+            Find
+          </span>
+        </button>
+
+        <button
+          onClick={() => navigate(`/mytrips/${accountId}`)}
+          className="flex flex-col items-center gap-1">
+          <FaBox size={20} color="#9ca3af" />
+          <span className="text-[10px] text-gray-400"
+            style={{ fontFamily: 'DM Sans, sans-serif' }}>
+            My Trips
+          </span>
+        </button>
+
+        <button
+          onClick={() => navigate(`/account/${accountId}`)}
+          className="flex flex-col items-center gap-1">
+          <FaUser size={20} color="#9ca3af" />
+          <span className="text-[10px] text-gray-400"
+            style={{ fontFamily: 'DM Sans, sans-serif' }}>
+            Account
+          </span>
+        </button>
+
+      </div>
+      
     </div>
   )
 }

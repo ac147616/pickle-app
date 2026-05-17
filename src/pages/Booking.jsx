@@ -6,7 +6,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 
 // Icons used on this screen
-import { FaArrowLeft, FaTruck, FaStar, FaCheck } from 'react-icons/fa'
+import { FaArrowLeft, FaTruck, FaStar, FaCheck, FaHome, FaSearch, FaBox, FaUser } from 'react-icons/fa'
 
 // Same trip data as FindSpace — in a real app this would come from the database
 // Here you just find the right trip using the tripId from the URL
@@ -158,7 +158,51 @@ export default function Booking() {
         >
           Back to Dashboard
         </button>
-  
+
+        {/* ── BOTTOM NAV ── */}
+        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 px-8 py-4 flex justify-between items-center">
+
+        <button
+          onClick={() => navigate(`/dashboard/${accountId}`)}
+          className="flex flex-col items-center gap-1">
+          <FaHome size={20} color="#9ca3af" />
+          <span className="text-[10px] text-gray-400"
+            style={{ fontFamily: 'DM Sans, sans-serif' }}>
+            Home
+          </span>
+        </button>
+
+        {/* Find is active across all three booking screens */}
+        <button className="flex flex-col items-center gap-1">
+          <FaSearch size={20} color="#0c3120" />
+          <span className="text-[10px] text-[#0c3120] font-medium"
+            style={{ fontFamily: 'DM Sans, sans-serif' }}>
+            Find
+          </span>
+        </button>
+
+        <button
+          onClick={() => navigate(`/mytrips/${accountId}`)}
+          className="flex flex-col items-center gap-1">
+          <FaBox size={20} color="#9ca3af" />
+          <span className="text-[10px] text-gray-400"
+            style={{ fontFamily: 'DM Sans, sans-serif' }}>
+            My Trips
+          </span>
+        </button>
+
+        <button
+          onClick={() => navigate(`/account/${accountId}`)}
+          className="flex flex-col items-center gap-1">
+          <FaUser size={20} color="#9ca3af" />
+          <span className="text-[10px] text-gray-400"
+            style={{ fontFamily: 'DM Sans, sans-serif' }}>
+            Account
+          </span>
+        </button>
+
+        </div>
+          
       </div>
     )
   } 
@@ -355,6 +399,50 @@ export default function Booking() {
           style={{ fontFamily: 'DM Sans, sans-serif' }}>
           By confirming you agree to PICKle's terms & conditions
         </p>
+
+      </div>
+      {/* ── BOTTOM NAV ── */}
+      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 px-8 py-4 flex justify-between items-center">
+
+        <button
+          onClick={() => navigate(`/dashboard/${accountId}`)}
+          className="flex flex-col items-center gap-1">
+          <FaHome size={20} color="#9ca3af" />
+          <span className="text-[10px] text-gray-400"
+            style={{ fontFamily: 'DM Sans, sans-serif' }}>
+            Home
+          </span>
+        </button>
+
+        <button
+          onClick={() => navigate(`/find/${accountId}`)}
+          className="flex flex-col items-center gap-1">
+          <FaSearch size={20} color="#0c3120" />
+          <span className="text-[10px] text-[#0c3120] font-medium"
+            style={{ fontFamily: 'DM Sans, sans-serif' }}>
+            Find
+          </span>
+        </button>
+
+        <button
+          onClick={() => navigate(`/mytrips/${accountId}`)}
+          className="flex flex-col items-center gap-1">
+          <FaBox size={20} color="#9ca3af" />
+          <span className="text-[10px] text-gray-400"
+            style={{ fontFamily: 'DM Sans, sans-serif' }}>
+            My Trips
+          </span>
+        </button>
+
+        <button
+          onClick={() => navigate(`/account/${accountId}`)}
+          className="flex flex-col items-center gap-1">
+          <FaUser size={20} color="#9ca3af" />
+          <span className="text-[10px] text-gray-400"
+            style={{ fontFamily: 'DM Sans, sans-serif' }}>
+            Account
+          </span>
+        </button>
 
       </div>
     </div>
