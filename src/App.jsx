@@ -1,4 +1,7 @@
-// Importing both pages so the router knows about them
+// Routes and Route are needed to define the page navigation
+import { Routes, Route } from 'react-router-dom'
+
+// Importing all pages so the router knows about them
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
 import FindSpace from './pages/FindSpace'
