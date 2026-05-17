@@ -1,20 +1,20 @@
-// React Router gives us the ability to show different pages
-// based on the URL, like a real multi-page app
+// React Router gives you the ability to show different pages
+// based on the URL
 import { Routes, Route } from 'react-router-dom'
 
-// We import the Login page we'll create in the next step
+// Importing both pages so the router knows about them
 import Login from './pages/Login'
+import Dashboard from './pages/Dashboard'
 
-// App is the root component — everything flows through here
-// Think of it like the main menu that decides what page to show
 function App() {
   return (
-    // Routes is the container that holds all our page definitions
     <Routes>
-      {/* When the URL is "/" (the homepage), show the Login page */}
+      {/* Homepage shows the login/account picker */}
       <Route path="/" element={<Login />} />
 
-      {/* We'll add more routes here as we build more screens */}
+      {/* Dashboard route accepts an accountId in the URL */}
+      {/* e.g. /dashboard/business or /dashboard/truck */}
+      <Route path="/dashboard/:accountId" element={<Dashboard />} />
     </Routes>
   )
 }
