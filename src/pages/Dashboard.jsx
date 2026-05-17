@@ -93,35 +93,62 @@ export default function Dashboard() {
         </div>
 
         {/* ── VISUAL STATS ROW ── */}
-        {/* Left: donut ring for freight savings, Right: key numbers */}
         <div className="flex items-center gap-4 bg-white bg-opacity-10 rounded-2xl px-4 py-3">
 
-        {/* ── DONUT RING ── */}
-        {/* Shows how much has been saved vs what would have been paid */}
-        <div className="relative flex items-center justify-center">
-        <PieChart width={90} height={90}>
+        {/* ── DOUBLE DONUT RING ── */}
+        {/* Outer ring: active deliveries as % of total */}
+        {/* Inner ring: freight cost saved as % of traditional cost */}
+        <div className="relative flex items-center justify-center flex-shrink-0">
+        <PieChart width={100} height={100}>
+
+            {/* ── OUTER RING — active deliveries ratio ── */}
             <Pie
             data={[
-                // Saved slice — cream color
-                { name: 'Saved', value: data.savings.amount },
-                // Remaining slice — what was still paid
-                { name: 'Paid', value: data.savings.traditional - data.savings.amount },
+                // Green slice: active deliveries out of total
+                { value: 2 },
+                // Remaining slice: completed
+                { value: 12 - 2 },
             ]}
-            cx={40}
-            cy={40}
+            cx={45}
+            cy={45}
+            innerRadius={42}
+            outerRadius={48}
+            startAngle={90}
+            endAngle={-270}
+            dataKey="value"
+            // strokeWidth 0 removes the glitch lines between slices
+            strokeWidth={0}
+            isAnimationActive={false}
+            >
+            {/* Active portion in green */}
+            <Cell fill="#4ade80" />
+            {/* Remaining in faded white */}
+            <Cell fill="rgba(255,255,255,0.1)" />
+            </Pie>
+
+            {/* ── INNER RING — freight savings ── */}
+            <Pie
+            data={[
+                { value: data.savings.amount },
+                { value: data.savings.traditional - data.savings.amount },
+            ]}
+            cx={45}
+            cy={45}
             innerRadius={28}
-            outerRadius={40}
+            outerRadius={38}
             startAngle={90}
             endAngle={-270}
             dataKey="value"
             strokeWidth={0}
+            isAnimationActive={false}
             >
             <Cell fill="#f9e9da" />
-            <Cell fill="rgba(255,255,255,0.15)" />
+            <Cell fill="rgba(255,255,255,0.1)" />
             </Pie>
+
         </PieChart>
 
-        {/* Percentage saved shown in center of ring */}
+        {/* Savings percentage in center of inner ring */}
         <div className="absolute flex flex-col items-center justify-center">
             <span className="text-[#f9e9da] text-sm font-bold"
             style={{ fontFamily: 'Belleza, sans-serif' }}>
@@ -130,48 +157,48 @@ export default function Dashboard() {
         </div>
         </div>
 
-        {/* Right side: two clean stats */}
-        <div className="flex flex-col flex-1">
+        {/* ── RIGHT SIDE STATS ── */}
+        <div className="flex flex-col gap-2 flex-1">
 
-        {/* ── KEY STATS ── */}
-        <div className="flex gap-5">
-
-            {/* Money saved stat */}
-            <div>
+        {/* Freight saved */}
+        <div>
             <p className="text-[#f9e9da] text-lg leading-none"
-                style={{ fontFamily: 'Belleza, sans-serif' }}>
-                ${data.savings.amount}
+            style={{ fontFamily: 'Belleza, sans-serif' }}>
+            ${data.savings.amount}
             </p>
             <p className="text-[#f9e9da] text-[10px] opacity-50 mt-0.5"
-                style={{ fontFamily: 'DM Sans, sans-serif' }}>
-                Freight saved
+            style={{ fontFamily: 'DM Sans, sans-serif' }}>
+            Freight saved
             </p>
-            </div>
-
-            {/* CO2 saved stat */}
-            <div>
-            <p className="text-[#f9e9da] text-lg leading-none"
-                style={{ fontFamily: 'Belleza, sans-serif' }}>
-                {data.co2.saved}kg
-            </p>
-            <p className="text-[#f9e9da] text-[10px] opacity-50 mt-0.5"
-                style={{ fontFamily: 'DM Sans, sans-serif' }}>
-                CO₂ saved
-            </p>
-            </div>
-
         </div>
 
-        {/* Divider */}
-        <div className="w-full h-px bg-white opacity-10 my-2"></div>
+        {/* CO2 saved */}
+        <div>
+            <p className="text-[#f9e9da] text-lg leading-none"
+            style={{ fontFamily: 'Belleza, sans-serif' }}>
+            {data.co2.saved}kg
+            </p>
+            <p className="text-[#f9e9da] text-[10px] opacity-50 mt-0.5"
+            style={{ fontFamily: 'DM Sans, sans-serif' }}>
+            CO₂ saved
+            </p>
+        </div>
 
-        {/* Active deliveries shown as one clean line */}
-        <div className="flex items-center gap-2">
-            {/* Green dot to show active status */}
+        {/* Active deliveries with green dot */}
+        <div className="flex items-center gap-1.5">
             <div className="w-1.5 h-1.5 rounded-full bg-green-400"></div>
-            <p className="text-[#f9e9da] text-xs opacity-70"
+            <p className="text-[#f9e9da] text-[10px] opacity-70"
             style={{ fontFamily: 'DM Sans, sans-serif' }}>
             2 active deliveries
+            </p>
+        </div>
+
+        {/* Total deliveries */}
+        <div className="flex items-center gap-1.5">
+            <div className="w-1.5 h-1.5 rounded-full bg-white opacity-30"></div>
+            <p className="text-[#f9e9da] text-[10px] opacity-70"
+            style={{ fontFamily: 'DM Sans, sans-serif' }}>
+            12 total deliveries
             </p>
         </div>
 
