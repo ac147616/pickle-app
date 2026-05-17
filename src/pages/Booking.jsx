@@ -106,57 +106,62 @@ export default function Booking() {
   // Shows a success screen after the user taps Confirm Booking
   if (confirmed) {
     return (
-      <div className="min-h-screen bg-[#f9e9da] flex flex-col items-center justify-center px-5">
-
-        {/* Big green check circle */}
-        <div className="bg-[#0c3120] rounded-full p-6 mb-6">
-          <FaCheck size={32} color="#f9e9da" />
+      <div className="min-h-screen bg-[#f9e9da] flex flex-col items-center justify-center px-6">
+  
+        {/* Check icon */}
+        <div className="bg-[#0c3120] rounded-full p-4 mb-4">
+          <FaCheck size={22} color="#f9e9da" />
         </div>
-
+  
+        {/* Heading */}
         <h1 className="text-[#0c3120] text-2xl mb-2 text-center"
           style={{ fontFamily: 'Belleza, sans-serif' }}>
           Booking Confirmed!
         </h1>
-
-        <p className="text-gray-400 text-sm text-center mb-2"
+  
+        {/* Subtext */}
+        <p className="text-gray-400 text-xs text-center mb-1"
           style={{ fontFamily: 'DM Sans, sans-serif' }}>
           Your delivery has been booked with
         </p>
-
-        <p className="text-[#0c3120] text-sm font-medium text-center mb-1"
+  
+        {/* Company */}
+        <p className="text-[#0c3120] text-sm text-center font-medium mb-0.5"
           style={{ fontFamily: 'DM Sans, sans-serif' }}>
           {trip.company}
         </p>
-
-        <p className="text-gray-400 text-sm text-center mb-8"
+  
+        {/* Route and date */}
+        <p className="text-gray-400 text-xs text-center mb-5"
           style={{ fontFamily: 'DM Sans, sans-serif' }}>
           {trip.route} · {trip.date}
         </p>
-
-        {/* Total paid */}
-        <div className="bg-white rounded-2xl px-6 py-4 mb-8 w-full max-w-sm text-center shadow-sm">
-          <p className="text-gray-400 text-xs mb-1"
+  
+        {/* Total paid card - constrained width with auto horizontal margin */}
+        <div className="bg-white rounded-2xl px-8 py-5 mb-5 shadow-sm"
+          style={{ width: '60%' }}>
+          <p className="text-gray-400 text-xs text-center mb-0.5"
             style={{ fontFamily: 'DM Sans, sans-serif' }}>
             Total paid
           </p>
-          <p className="text-[#0c3120] text-3xl"
+          <p className="text-[#0c3120] text-3xl text-center"
             style={{ fontFamily: 'Belleza, sans-serif' }}>
             ${total}
           </p>
         </div>
-
-        {/* Back to dashboard button */}
+  
+        {/* Button - same constrained width */}
         <button
           onClick={() => navigate(`/dashboard/${accountId}`)}
-          className="w-full max-w-sm bg-[#0c3120] text-[#f9e9da] rounded-xl py-3 active:scale-95 transition-all duration-150"
-          style={{ fontFamily: 'Belleza, sans-serif' }}
+          className="bg-[#0c3120] text-[#f9e9da] rounded-xl py-3 active:scale-95 transition-all duration-150"
+          style={{ width: '60%', fontFamily: 'Belleza, sans-serif' }}
         >
           Back to Dashboard
         </button>
-
+  
       </div>
     )
-  }
+  } 
 
   return (
     <div className="min-h-screen bg-[#f9e9da] pb-24">
