@@ -159,14 +159,15 @@ export default function MyTrips() {
                 </div>
               </div>
 
-              {/* Right: price and status */}
-              <div className="text-right">
+              {/* Right: price, status and track button */}
+              <div className="text-right flex flex-col items-end gap-1">
                 <p className="text-[#0c3120] text-sm"
                   style={{ fontFamily: 'Belleza, sans-serif' }}>
                   {trip.price}
                 </p>
+
                 {/* Status dot and label */}
-                <div className="flex items-center gap-1 justify-end mt-1">
+                <div className="flex items-center gap-1 justify-end">
                   <div className={`w-1.5 h-1.5 rounded-full ${
                     trip.status === 'active' ? 'bg-green-500' : 'bg-gray-300'
                   }`}></div>
@@ -175,6 +176,17 @@ export default function MyTrips() {
                     {trip.status}
                   </p>
                 </div>
+
+                {/* Track button only shows for active trips */}
+                {trip.status === 'active' && (
+                  <button
+                    onClick={() => navigate(`/tracking/${accountId}/${trip.id}`)}
+                    className="bg-[#0c3120] text-[#f9e9da] text-[10px] px-3 py-1 rounded-full mt-1 active:scale-95 transition-all duration-150"
+                    style={{ fontFamily: 'DM Sans, sans-serif' }}
+                  >
+                    Track →
+                  </button>
+                )}
               </div>
             </div>
           ))}
