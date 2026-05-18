@@ -396,12 +396,18 @@ export default function Dashboard() {
         </button>
 
         <button
-          onClick={() => navigate(`/find/${accountId}`)}
+          onClick={() => accountId === 'truck'
+            ? navigate(`/listspace/${accountId}`)
+            : navigate(`/find/${accountId}`)
+          }
           className="flex flex-col items-center gap-1">
-          <FaSearch size={20} color="#9ca3af" />
+          {accountId === 'truck'
+            ? <FaPlus size={20} color="#9ca3af" />
+            : <FaSearch size={20} color="#9ca3af" />
+          }
           <span className="text-[10px] text-gray-400"
             style={{ fontFamily: 'DM Sans, sans-serif' }}>
-            Find
+            {accountId === 'truck' ? 'List Space' : 'Find'}
           </span>
         </button>
 
