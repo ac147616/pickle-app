@@ -311,7 +311,9 @@ export default function Dashboard() {
           </span>
         </button>
 
-        <button className="flex flex-col items-center gap-1">
+        <button
+          onClick={() => navigate(`/account/${accountId}`)}
+          className="flex flex-col items-center gap-1">
           <FaUser size={20} color="#9ca3af" />
           <span className="text-[10px] text-gray-400"
             style={{ fontFamily: 'DM Sans, sans-serif' }}>
