@@ -3,7 +3,7 @@
 import { useParams, useNavigate } from 'react-router-dom'
 
 // Icons used on this screen
-import { FaHome, FaSearch, FaBox, FaUser, FaBell, FaCreditCard, FaQuestionCircle, FaChevronRight, FaSignOutAlt } from 'react-icons/fa'
+import { FaHome, FaSearch, FaBox, FaUser, FaBell, FaCreditCard, FaQuestionCircle, FaChevronRight, FaSignOutAlt, FaPlus } from 'react-icons/fa'
 
 // Dummy account data for each account type
 // Each account has different profile info
@@ -214,14 +214,20 @@ export default function Account() {
         </button>
 
         <button
-          onClick={() => navigate(`/find/${accountId}`)}
-          className="flex flex-col items-center gap-1">
-          <FaSearch size={20} color="#9ca3af" />
-          <span className="text-[10px] text-gray-400"
-            style={{ fontFamily: 'DM Sans, sans-serif' }}>
-            Find
-          </span>
-        </button>
+        onClick={() => accountId === 'truck'
+          ? navigate(`/listspace/${accountId}`)
+          : navigate(`/find/${accountId}`)
+        }
+        className="flex flex-col items-center gap-1">
+        {accountId === 'truck'
+          ? <FaPlus size={20} color="#9ca3af" />
+          : <FaSearch size={20} color="#9ca3af" />
+        }
+        <span className="text-[10px] text-gray-400"
+          style={{ fontFamily: 'DM Sans, sans-serif' }}>
+          {accountId === 'truck' ? 'List Space' : 'Find'}
+        </span>
+      </button>
 
         <button
           onClick={() => navigate(`/mytrips/${accountId}`)}
