@@ -127,13 +127,13 @@ export default function MyTrips() {
         <div className="flex flex-col gap-3">
           {filtered.map((trip) => (
             <div
-              key={item.id}
-              onClick={() => item.status === 'active'
-                ? navigate(`/tracking/${accountId}/${item.id}`)
+              key={trip.id}
+              onClick={() => trip.status === 'active'
+                ? navigate(`/tracking/${accountId}/${trip.id}`)
                 : null
               }
               className={`bg-white rounded-2xl px-4 py-4 shadow-sm flex items-center justify-between
-                ${item.status === 'active' ? 'cursor-pointer active:scale-95 transition-all duration-150' : ''}`}
+                ${trip.status === 'active' ? 'cursor-pointer active:scale-95 transition-all duration-150' : ''}`}
             >
               {/* Left: truck icon + route and company */}
               <div className="flex items-center gap-3">
