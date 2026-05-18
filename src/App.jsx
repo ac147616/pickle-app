@@ -6,6 +6,7 @@ import FindSpace from './pages/FindSpace'
 import Booking from './pages/Booking'
 import MyTrips from './pages/MyTrips'
 import Account from './pages/Account'
+import ListSpace from './pages/ListSpace'
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
       <Route path="/booking/:accountId/:tripId" element={<Booking />} />
       <Route path="/mytrips/:accountId" element={<MyTrips />} />
       <Route path="/account/:accountId" element={<Account />} />
+      <Route path="/listspace/:accountId" element={<ListSpace />} />
     </Routes>
   )
 }
