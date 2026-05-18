@@ -2,72 +2,76 @@
 // useNavigate lets you move between pages
 import { useParams, useNavigate } from 'react-router-dom'
 
-// useState lets you track what the user has typed into the form fields
-import { useState } from 'react'
+// useState lets you track form fields and search state
+// useEffect runs code when the component first loads
+import { useState, useEffect } from 'react'
 
 // Icons used on this screen
 import { FaArrowLeft, FaStar, FaTruck, FaHome, FaSearch, FaBox, FaUser } from 'react-icons/fa'
 
-// Dummy trip results that show after searching
-// In a real app these would come from the database
-const dummyTrips = [
-    {
-      id: 1,
-      company: 'Kiwi Transport Co.',
-      route: 'Auckland → Wellington',
-      date: '18 May 2026',
-      departure: '06:00 AM',
-      arrival: '12:30 PM',
-      spaceAvailable: 4.8,
-      tempType: 'Ambient',
-      priceMin: 45,
-      priceMax: 80,
-      rating: 4.8,
-      truckType: 'MAN TGX',
-    },
-    {
-      id: 2,
-      company: 'Mike Taufa · Private Owner',
-      route: 'Auckland → Wellington',
-      date: '18 May 2026',
-      departure: '08:00 AM',
-      arrival: '02:00 PM',
-      spaceAvailable: 3.2,
-      tempType: 'Ambient',
-      priceMin: 30,
-      priceMax: 60,
-      rating: 4.6,
-      truckType: 'Ford Ranger Ute',
-    },
-    {
-      id: 3,
-      company: 'NZ Express Haulage',
-      route: 'Auckland → Wellington',
-      date: '19 May 2026',
-      departure: '05:30 AM',
-      arrival: '11:45 AM',
-      spaceAvailable: 6.1,
-      tempType: 'Chilled',
-      priceMin: 55,
-      priceMax: 90,
-      rating: 4.6,
-      truckType: 'Scania R',
-    },
-    {
-      id: 4,
-      company: 'Dave Kirino · Private Owner',
-      route: 'Auckland → Wellington',
-      date: '20 May 2026',
-      departure: '07:00 AM',
-      arrival: '01:15 PM',
-      spaceAvailable: 2.9,
-      tempType: 'Ambient',
-      priceMin: 25,
-      priceMax: 55,
-      rating: 4.3,
-      truckType: 'Toyota Hilux',
-    },
-  ]
+// getListings fetches real listings from the database
+import { getListings } from '../api'
+
+// Fallback trips shown if no real listings exist yet
+// These always show as a baseline so the screen is never empty
+const fallbackTrips = [
+  {
+    id: 1,
+    company: 'Kiwi Transport Co.',
+    route: 'Auckland → Wellington',
+    date: '18 May 2026',
+    departure: '06:00 AM',
+    arrival: '12:30 PM',
+    spaceAvailable: 4.8,
+    tempType: 'Ambient',
+    priceMin: 45,
+    priceMax: 80,
+    rating: 4.8,
+    truckType: 'MAN TGX',
+  },
+  {
+    id: 2,
+    company: 'Mike Taufa · Private Owner',
+    route: 'Auckland → Wellington',
+    date: '18 May 2026',
+    departure: '08:00 AM',
+    arrival: '02:00 PM',
+    spaceAvailable: 3.2,
+    tempType: 'Ambient',
+    priceMin: 30,
+    priceMax: 60,
+    rating: 4.6,
+    truckType: 'Ford Ranger Ute',
+  },
+  {
+    id: 3,
+    company: 'NZ Express Haulage',
+    route: 'Auckland → Wellington',
+    date: '19 May 2026',
+    departure: '05:30 AM',
+    arrival: '11:45 AM',
+    spaceAvailable: 6.1,
+    tempType: 'Chilled',
+    priceMin: 55,
+    priceMax: 90,
+    rating: 4.6,
+    truckType: 'Scania R',
+  },
+  {
+    id: 4,
+    company: 'Dave Kirino · Private Owner',
+    route: 'Auckland → Wellington',
+    date: '20 May 2026',
+    departure: '07:00 AM',
+    arrival: '01:15 PM',
+    spaceAvailable: 2.9,
+    tempType: 'Ambient',
+    priceMin: 25,
+    priceMax: 55,
+    rating: 4.3,
+    truckType: 'Toyota Hilux',
+  },
+]
 
 export default function FindSpace() {
   const { accountId } = useParams()
@@ -83,8 +87,39 @@ export default function FindSpace() {
   const [date, setDate] = useState('')
   const [space, setSpace] = useState('')
 
+  // trips holds the listings shown in results
+  // starts with fallback data then gets replaced with real data
+  const [trips, setTrips] = useState(fallbackTrips)
+
+  // When the component loads fetch real listings from the database
+  // If there are real listings combine them with fallback ones
+  useEffect(() => {
+    getListings().then((data) => {
+      if (data && data.length > 0) {
+        // Map database fields to match the shape the UI expects
+        const mapped = data.map((l) => ({
+          id: `db-${l.id}`,
+          company: l.company,
+          route: l.route,
+          date: l.date,
+          departure: l.departure,
+          arrival: '—',
+          spaceAvailable: l.space,
+          tempType: l.tempType,
+          priceMin: Math.round(l.price * 0.8),
+          priceMax: l.price,
+          rating: 4.5,
+          truckType: l.truckType,
+        }))
+        // Real listings show at the top, fallback at the bottom
+        setTrips([...mapped, ...fallbackTrips])
+      }
+    }).catch(() => {
+      // If fetch fails just keep fallback trips silently
+    })
+  }, [])
+
   // Called when the user taps Search
-  // Sets hasSearched to true which reveals the results
   const handleSearch = () => {
     setHasSearched(true)
   }
@@ -95,7 +130,7 @@ export default function FindSpace() {
       {/* ── TOP HEADER ── */}
       <div className="bg-[#0c3120] px-5 pt-10 pb-5">
 
-        {/* Back button row */}
+        {/* Back button */}
         <button
           onClick={() => navigate(`/dashboard/${accountId}`)}
           className="flex items-center gap-2 mb-4 opacity-70 active:opacity-100"
@@ -107,7 +142,6 @@ export default function FindSpace() {
           </span>
         </button>
 
-        {/* Screen title */}
         <h1 className="text-[#f9e9da] text-2xl"
           style={{ fontFamily: 'Belleza, sans-serif' }}>
           Find Delivery Space
@@ -138,7 +172,6 @@ export default function FindSpace() {
             />
           </div>
 
-          {/* Thin divider between fields */}
           <div className="w-full h-px bg-gray-100"></div>
 
           {/* Drop-off location */}
@@ -157,13 +190,10 @@ export default function FindSpace() {
             />
           </div>
 
-          {/* Thin divider */}
           <div className="w-full h-px bg-gray-100"></div>
 
           {/* Date and space on the same row */}
           <div className="grid grid-cols-2 gap-3">
-
-            {/* Date picker */}
             <div>
               <label className="text-[#0c3120] text-xs opacity-50 mb-1 block"
                 style={{ fontFamily: 'DM Sans, sans-serif' }}>
@@ -177,8 +207,6 @@ export default function FindSpace() {
                 style={{ fontFamily: 'DM Sans, sans-serif' }}
               />
             </div>
-
-            {/* Space needed */}
             <div>
               <label className="text-[#0c3120] text-xs opacity-50 mb-1 block"
                 style={{ fontFamily: 'DM Sans, sans-serif' }}>
@@ -213,12 +241,12 @@ export default function FindSpace() {
             {/* Results count */}
             <p className="text-[#0c3120] text-xs opacity-50 mb-3"
               style={{ fontFamily: 'DM Sans, sans-serif' }}>
-              {dummyTrips.length} trips available
+              {trips.length} trips available
             </p>
 
             {/* Trip result cards */}
             <div className="flex flex-col gap-3">
-              {dummyTrips.map((trip) => (
+              {trips.map((trip) => (
                 <div
                   key={trip.id}
                   className="bg-white rounded-2xl p-4 shadow-sm"
@@ -229,8 +257,6 @@ export default function FindSpace() {
                       style={{ fontFamily: 'Belleza, sans-serif' }}>
                       {trip.company}
                     </p>
-
-                    {/* Star rating */}
                     <div className="flex items-center gap-1">
                       <FaStar size={10} color="#f59e0b" />
                       <span className="text-xs text-gray-400"
@@ -246,7 +272,7 @@ export default function FindSpace() {
                     {trip.route} · {trip.date}
                   </p>
 
-                  {/* Truck icon row with details */}
+                  {/* Truck details row */}
                   <div className="flex items-center gap-2 mb-3">
                     <div className="bg-[#f9e9da] rounded-full p-1.5">
                       <FaTruck size={10} color="#0c3120" />
@@ -255,19 +281,12 @@ export default function FindSpace() {
                       style={{ fontFamily: 'DM Sans, sans-serif' }}>
                       {trip.truckType}
                     </span>
-
-                    {/* Dot separator */}
                     <div className="w-1 h-1 rounded-full bg-gray-200"></div>
-
                     <span className="text-xs text-gray-400"
                       style={{ fontFamily: 'DM Sans, sans-serif' }}>
                       {trip.spaceAvailable}m³ avail
                     </span>
-
-                    {/* Dot separator */}
                     <div className="w-1 h-1 rounded-full bg-gray-200"></div>
-
-                    {/* Temperature type badge */}
                     <span className="text-xs text-gray-400"
                       style={{ fontFamily: 'DM Sans, sans-serif' }}>
                       {trip.tempType}
@@ -287,9 +306,8 @@ export default function FindSpace() {
                       </span>
                     </div>
 
-                    {/* Two buttons side by side */}
+                    {/* Details and Book buttons */}
                     <div className="flex gap-2">
-                      {/* View details button — outlined */}
                       <button
                         onClick={() => navigate(`/trip/${accountId}/${trip.id}`)}
                         className="border border-[#0c3120] text-[#0c3120] text-xs px-3 py-2 rounded-xl active:scale-95 transition-all duration-150"
@@ -297,8 +315,6 @@ export default function FindSpace() {
                       >
                         Details
                       </button>
-
-                      {/* Book button — filled */}
                       <button
                         onClick={() => navigate(`/booking/${accountId}/${trip.id}`)}
                         className="bg-[#0c3120] text-[#f9e9da] text-xs px-4 py-2 rounded-xl active:scale-95 transition-all duration-150"
@@ -314,6 +330,7 @@ export default function FindSpace() {
           </div>
         )}
       </div>
+
       {/* ── BOTTOM NAV ── */}
       <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 px-8 py-4 flex justify-between items-center">
 
@@ -357,7 +374,6 @@ export default function FindSpace() {
         </button>
 
       </div>
-      
     </div>
   )
 }
