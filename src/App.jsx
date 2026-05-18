@@ -7,6 +7,7 @@ import Booking from './pages/Booking'
 import MyTrips from './pages/MyTrips'
 import Account from './pages/Account'
 import ListSpace from './pages/ListSpace'
+import TripDetails from './pages/TripDetails'
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
       <Route path="/mytrips/:accountId" element={<MyTrips />} />
       <Route path="/account/:accountId" element={<Account />} />
       <Route path="/listspace/:accountId" element={<ListSpace />} />
+      <Route path="/trip/:accountId/:tripId" element={<TripDetails />} />
     </Routes>
   )
 }

@@ -274,7 +274,7 @@ export default function FindSpace() {
                     </span>
                   </div>
 
-                  {/* Bottom row: price range + book button */}
+                  {/* Bottom row: price + two buttons */}
                   <div className="flex items-center justify-between">
                     <div>
                       <span className="text-[#0c3120] text-base font-medium"
@@ -287,14 +287,26 @@ export default function FindSpace() {
                       </span>
                     </div>
 
-                    {/* Book button navigates to booking confirmation */}
-                    <button
-                      onClick={() => navigate(`/booking/${accountId}/${trip.id}`)}
-                      className="bg-[#0c3120] text-[#f9e9da] text-xs px-4 py-2 rounded-xl active:scale-95 transition-all duration-150"
-                      style={{ fontFamily: 'Belleza, sans-serif' }}
-                    >
-                      Book
-                    </button>
+                    {/* Two buttons side by side */}
+                    <div className="flex gap-2">
+                      {/* View details button — outlined */}
+                      <button
+                        onClick={() => navigate(`/trip/${accountId}/${trip.id}`)}
+                        className="border border-[#0c3120] text-[#0c3120] text-xs px-3 py-2 rounded-xl active:scale-95 transition-all duration-150"
+                        style={{ fontFamily: 'Belleza, sans-serif' }}
+                      >
+                        Details
+                      </button>
+
+                      {/* Book button — filled */}
+                      <button
+                        onClick={() => navigate(`/booking/${accountId}/${trip.id}`)}
+                        className="bg-[#0c3120] text-[#f9e9da] text-xs px-4 py-2 rounded-xl active:scale-95 transition-all duration-150"
+                        style={{ fontFamily: 'Belleza, sans-serif' }}
+                      >
+                        Book
+                      </button>
+                    </div>
                   </div>
                 </div>
               ))}
