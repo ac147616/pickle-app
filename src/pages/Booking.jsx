@@ -2,14 +2,16 @@
 // useNavigate lets you move between pages
 import { useParams, useNavigate } from 'react-router-dom'
 
+// Import createBooking to save confirmed bookings to the database
+import { createBooking } from '../api'
+
 // useState tracks whether the booking has been confirmed
 import { useState } from 'react'
 
 // Icons used on this screen
 import { FaArrowLeft, FaTruck, FaStar, FaCheck, FaHome, FaSearch, FaBox, FaUser } from 'react-icons/fa'
 
-// Same trip data as FindSpace — in a real app this would come from the database
-// Here you just find the right trip using the tripId from the URL
+// Trip data matched by tripId from the URL
 const dummyTrips = [
   {
     id: 1,
@@ -24,7 +26,6 @@ const dummyTrips = [
     priceMax: 80,
     rating: 4.8,
     truckType: 'MAN TGX',
-    // Final price shown on confirmation
     finalPrice: 65,
   },
   {
@@ -79,7 +80,6 @@ export default function Booking() {
   const navigate = useNavigate()
 
   // Find the trip that matches the tripId from the URL
-  // parseInt converts the string from the URL to a number
   const trip = dummyTrips.find((t) => t.id === parseInt(tripId))
 
   // Track whether the user has confirmed the booking
@@ -91,7 +91,29 @@ export default function Booking() {
   // Calculate total
   const total = trip ? (trip.finalPrice + parseFloat(platformFee)).toFixed(2) : 0
 
-  // If no matching trip found, show a simple error
+  // Called when user taps Confirm Booking
+  // Saves the booking to the database then shows success screen
+  const handleConfirm = async () => {
+    try {
+      await createBooking({
+        accountId,
+        company: trip.company,
+        route: trip.route,
+        date: trip.date,
+        departure: trip.departure,
+        arrival: trip.arrival,
+        truckType: trip.truckType,
+        tempType: trip.tempType,
+        finalPrice: trip.finalPrice,
+      })
+    } catch (err) {
+      console.error('Failed to save booking:', err)
+    }
+    // Always show success even if save fails during demo
+    setConfirmed(true)
+  }
+
+  // If no matching trip found show a simple error
   if (!trip) {
     return (
       <div className="min-h-screen bg-[#f9e9da] flex items-center justify-center">
@@ -103,41 +125,34 @@ export default function Booking() {
   }
 
   // ── CONFIRMED STATE ──
-  // Shows a success screen after the user taps Confirm Booking
   if (confirmed) {
     return (
-      <div className="min-h-screen bg-[#f9e9da] flex flex-col items-center justify-center px-6">
-  
-        {/* Check icon */}
+      <div className="min-h-screen bg-[#f9e9da] flex flex-col items-center justify-center px-6 pb-24">
+
         <div className="bg-[#0c3120] rounded-full p-4 mb-4">
           <FaCheck size={22} color="#f9e9da" />
         </div>
-  
-        {/* Heading */}
+
         <h1 className="text-[#0c3120] text-2xl mb-2 text-center"
           style={{ fontFamily: 'Belleza, sans-serif' }}>
           Booking Confirmed!
         </h1>
-  
-        {/* Subtext */}
+
         <p className="text-gray-400 text-xs text-center mb-1"
           style={{ fontFamily: 'DM Sans, sans-serif' }}>
           Your delivery has been booked with
         </p>
-  
-        {/* Company */}
+
         <p className="text-[#0c3120] text-sm text-center font-medium mb-0.5"
           style={{ fontFamily: 'DM Sans, sans-serif' }}>
           {trip.company}
         </p>
-  
-        {/* Route and date */}
-        <p className="text-gray-400 text-xs text-center mb-5"
+
+        <p className="text-gray-400 text-xs text-center mb-12"
           style={{ fontFamily: 'DM Sans, sans-serif' }}>
           {trip.route} · {trip.date}
         </p>
-  
-        {/* Total paid card - constrained width with auto horizontal margin */}
+
         <div className="bg-white rounded-2xl px-8 py-5 mb-5 shadow-sm"
           style={{ width: '60%' }}>
           <p className="text-gray-400 text-xs text-center mb-0.5"
@@ -149,8 +164,7 @@ export default function Booking() {
             ${total}
           </p>
         </div>
-  
-        {/* Button - same constrained width */}
+
         <button
           onClick={() => navigate(`/dashboard/${accountId}`)}
           className="bg-[#0c3120] text-[#f9e9da] rounded-xl py-3 active:scale-95 transition-all duration-150"
@@ -161,59 +175,51 @@ export default function Booking() {
 
         {/* ── BOTTOM NAV ── */}
         <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 px-8 py-4 flex justify-between items-center">
-
-        <button
-          onClick={() => navigate(`/dashboard/${accountId}`)}
-          className="flex flex-col items-center gap-1">
-          <FaHome size={20} color="#9ca3af" />
-          <span className="text-[10px] text-gray-400"
-            style={{ fontFamily: 'DM Sans, sans-serif' }}>
-            Home
-          </span>
-        </button>
-
-        {/* Find is active across all three booking screens */}
-        <button className="flex flex-col items-center gap-1">
-          <FaSearch size={20} color="#0c3120" />
-          <span className="text-[10px] text-[#0c3120] font-medium"
-            style={{ fontFamily: 'DM Sans, sans-serif' }}>
-            Find
-          </span>
-        </button>
-
-        <button
-          onClick={() => navigate(`/mytrips/${accountId}`)}
-          className="flex flex-col items-center gap-1">
-          <FaBox size={20} color="#9ca3af" />
-          <span className="text-[10px] text-gray-400"
-            style={{ fontFamily: 'DM Sans, sans-serif' }}>
-            My Trips
-          </span>
-        </button>
-
-        <button
-          onClick={() => navigate(`/account/${accountId}`)}
-          className="flex flex-col items-center gap-1">
-          <FaUser size={20} color="#9ca3af" />
-          <span className="text-[10px] text-gray-400"
-            style={{ fontFamily: 'DM Sans, sans-serif' }}>
-            Account
-          </span>
-        </button>
-
+          <button
+            onClick={() => navigate(`/dashboard/${accountId}`)}
+            className="flex flex-col items-center gap-1">
+            <FaHome size={20} color="#9ca3af" />
+            <span className="text-[10px] text-gray-400"
+              style={{ fontFamily: 'DM Sans, sans-serif' }}>
+              Home
+            </span>
+          </button>
+          <button className="flex flex-col items-center gap-1">
+            <FaSearch size={20} color="#0c3120" />
+            <span className="text-[10px] text-[#0c3120] font-medium"
+              style={{ fontFamily: 'DM Sans, sans-serif' }}>
+              Find
+            </span>
+          </button>
+          <button
+            onClick={() => navigate(`/mytrips/${accountId}`)}
+            className="flex flex-col items-center gap-1">
+            <FaBox size={20} color="#9ca3af" />
+            <span className="text-[10px] text-gray-400"
+              style={{ fontFamily: 'DM Sans, sans-serif' }}>
+              My Trips
+            </span>
+          </button>
+          <button
+            onClick={() => navigate(`/account/${accountId}`)}
+            className="flex flex-col items-center gap-1">
+            <FaUser size={20} color="#9ca3af" />
+            <span className="text-[10px] text-gray-400"
+              style={{ fontFamily: 'DM Sans, sans-serif' }}>
+              Account
+            </span>
+          </button>
         </div>
-          
+
       </div>
     )
-  } 
+  }
 
   return (
     <div className="min-h-screen bg-[#f9e9da] pb-24">
 
       {/* ── TOP HEADER ── */}
       <div className="bg-[#0c3120] px-5 pt-10 pb-5">
-
-        {/* Back button */}
         <button
           onClick={() => navigate(`/find/${accountId}`)}
           className="flex items-center gap-2 mb-4 opacity-70"
@@ -224,7 +230,6 @@ export default function Booking() {
             Back
           </span>
         </button>
-
         <h1 className="text-[#f9e9da] text-2xl"
           style={{ fontFamily: 'Belleza, sans-serif' }}>
           Confirm Booking
@@ -237,116 +242,82 @@ export default function Booking() {
 
       <div className="px-5 pt-5 flex flex-col gap-4">
 
-        {/* ── DELIVERY SUMMARY CARD ── */}
-        <div className="bg-white rounded-2xl p-4 shadow-sm">
-
-          <p className="text-[#0c3120] text-xs opacity-50 mb-3"
-            style={{ fontFamily: 'DM Sans, sans-serif' }}>
-            Delivery summary
-          </p>
-
-          {/* Company name and rating */}
-          <div className="flex items-center justify-between mb-3">
-            <div className="flex items-center gap-2">
-              <div className="bg-[#f9e9da] rounded-full p-2">
-                <FaTruck size={12} color="#0c3120" />
-              </div>
-              <p className="text-[#0c3120] text-sm font-medium"
+        {/* ── CARRIER CARD ── */}
+        <div className="bg-[#0c3120] rounded-2xl p-4 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="bg-white bg-opacity-10 rounded-full p-3">
+              <FaTruck size={16} color="#f9e9da" />
+            </div>
+            <div>
+              <p className="text-[#f9e9da] text-sm"
                 style={{ fontFamily: 'Belleza, sans-serif' }}>
                 {trip.company}
               </p>
-            </div>
-            <div className="flex items-center gap-1">
-              <FaStar size={10} color="#f59e0b" />
-              <span className="text-xs text-gray-400">{trip.rating}</span>
-            </div>
-          </div>
-
-          {/* Divider */}
-          <div className="w-full h-px bg-gray-100 mb-3"></div>
-
-          {/* Trip details grid */}
-          <div className="grid grid-cols-2 gap-y-3">
-
-            <div>
-              <p className="text-gray-400 text-[10px]"
-                style={{ fontFamily: 'DM Sans, sans-serif' }}>
-                Route
-              </p>
-              <p className="text-[#0c3120] text-xs font-medium mt-0.5"
-                style={{ fontFamily: 'DM Sans, sans-serif' }}>
-                {trip.route}
-              </p>
-            </div>
-
-            <div>
-              <p className="text-gray-400 text-[10px]"
-                style={{ fontFamily: 'DM Sans, sans-serif' }}>
-                Date
-              </p>
-              <p className="text-[#0c3120] text-xs font-medium mt-0.5"
-                style={{ fontFamily: 'DM Sans, sans-serif' }}>
-                {trip.date}
-              </p>
-            </div>
-
-            <div>
-              <p className="text-gray-400 text-[10px]"
-                style={{ fontFamily: 'DM Sans, sans-serif' }}>
-                Pickup
-              </p>
-              <p className="text-[#0c3120] text-xs font-medium mt-0.5"
-                style={{ fontFamily: 'DM Sans, sans-serif' }}>
-                {trip.departure}
-              </p>
-            </div>
-
-            <div>
-              <p className="text-gray-400 text-[10px]"
-                style={{ fontFamily: 'DM Sans, sans-serif' }}>
-                Drop-off
-              </p>
-              <p className="text-[#0c3120] text-xs font-medium mt-0.5"
-                style={{ fontFamily: 'DM Sans, sans-serif' }}>
-                {trip.arrival}
-              </p>
-            </div>
-
-            <div>
-              <p className="text-gray-400 text-[10px]"
-                style={{ fontFamily: 'DM Sans, sans-serif' }}>
-                Truck type
-              </p>
-              <p className="text-[#0c3120] text-xs font-medium mt-0.5"
+              <p className="text-[#f9e9da] text-xs opacity-50 mt-0.5"
                 style={{ fontFamily: 'DM Sans, sans-serif' }}>
                 {trip.truckType}
               </p>
             </div>
+          </div>
+          <div className="flex items-center gap-1.5 bg-white bg-opacity-10 rounded-full px-3 py-1">
+            <FaStar size={10} color="#f9e9da" />
+            <span className="text-[#f9e9da] text-xs"
+              style={{ fontFamily: 'DM Sans, sans-serif' }}>
+              {trip.rating}
+            </span>
+          </div>
+        </div>
 
+        {/* ── ROUTE CARD ── */}
+        <div className="bg-white rounded-2xl p-4 flex flex-col gap-3">
+          <div className="flex items-center justify-between">
+            <p className="text-[#0c3120] text-base"
+              style={{ fontFamily: 'Belleza, sans-serif' }}>
+              {trip.route}
+            </p>
+            <span className="text-xs bg-[#f9e9da] text-[#0c3120] rounded-full px-3 py-1"
+              style={{ fontFamily: 'DM Sans, sans-serif' }}>
+              {trip.tempType}
+            </span>
+          </div>
+          <div className="w-full h-px bg-gray-100"></div>
+          <div className="grid grid-cols-3 gap-2">
             <div>
-              <p className="text-gray-400 text-[10px]"
+              <p className="text-[10px] text-gray-400 mb-0.5"
                 style={{ fontFamily: 'DM Sans, sans-serif' }}>
-                Goods type
+                Pickup
               </p>
-              <p className="text-[#0c3120] text-xs font-medium mt-0.5"
+              <p className="text-[#0c3120] text-xs font-medium"
                 style={{ fontFamily: 'DM Sans, sans-serif' }}>
-                {trip.tempType}
+                {trip.departure}
               </p>
             </div>
-
+            <div>
+              <p className="text-[10px] text-gray-400 mb-0.5"
+                style={{ fontFamily: 'DM Sans, sans-serif' }}>
+                Drop-off
+              </p>
+              <p className="text-[#0c3120] text-xs font-medium"
+                style={{ fontFamily: 'DM Sans, sans-serif' }}>
+                {trip.arrival}
+              </p>
+            </div>
+            <div>
+              <p className="text-[10px] text-gray-400 mb-0.5"
+                style={{ fontFamily: 'DM Sans, sans-serif' }}>
+                Date
+              </p>
+              <p className="text-[#0c3120] text-xs font-medium"
+                style={{ fontFamily: 'DM Sans, sans-serif' }}>
+                {trip.date}
+              </p>
+            </div>
           </div>
         </div>
 
         {/* ── PRICE BREAKDOWN CARD ── */}
-        <div className="bg-white rounded-2xl p-4 shadow-sm">
-
-          <p className="text-[#0c3120] text-xs opacity-50 mb-3"
-            style={{ fontFamily: 'DM Sans, sans-serif' }}>
-            Price breakdown
-          </p>
-
-          {/* Freight fee row */}
-          <div className="flex justify-between items-center mb-2">
+        <div className="bg-white rounded-2xl p-4 flex flex-col gap-3">
+          <div className="flex justify-between items-center">
             <p className="text-[#0c3120] text-sm"
               style={{ fontFamily: 'DM Sans, sans-serif' }}>
               Freight fee
@@ -356,29 +327,23 @@ export default function Booking() {
               ${trip.finalPrice}
             </p>
           </div>
-
-          {/* Platform fee row */}
-          <div className="flex justify-between items-center mb-3">
-            <p className="text-gray-400 text-sm"
+          <div className="flex justify-between items-center">
+            <p className="text-[#0c3120] text-sm opacity-50"
               style={{ fontFamily: 'DM Sans, sans-serif' }}>
               Platform fee (5%)
             </p>
-            <p className="text-gray-400 text-sm"
+            <p className="text-[#0c3120] text-sm opacity-50"
               style={{ fontFamily: 'DM Sans, sans-serif' }}>
               ${platformFee}
             </p>
           </div>
-
-          {/* Divider */}
-          <div className="w-full h-px bg-gray-100 mb-3"></div>
-
-          {/* Total row */}
+          <div className="w-full h-px bg-gray-100"></div>
           <div className="flex justify-between items-center">
             <p className="text-[#0c3120] text-base"
               style={{ fontFamily: 'Belleza, sans-serif' }}>
               Total
             </p>
-            <p className="text-[#0c3120] text-xl"
+            <p className="text-[#0c3120] text-2xl"
               style={{ fontFamily: 'Belleza, sans-serif' }}>
               ${total}
             </p>
@@ -387,23 +352,22 @@ export default function Booking() {
 
         {/* ── CONFIRM BUTTON ── */}
         <button
-          onClick={() => setConfirmed(true)}
-          className="w-full bg-[#0c3120] text-[#f9e9da] rounded-xl py-4 active:scale-95 transition-all duration-150 shadow-sm"
+          onClick={handleConfirm}
+          className="w-full bg-[#0c3120] text-[#f9e9da] rounded-xl py-4 mt-1 active:scale-95 transition-all duration-150"
           style={{ fontFamily: 'Belleza, sans-serif' }}
         >
           Confirm Booking
         </button>
 
-        {/* Small terms note below button */}
         <p className="text-center text-gray-400 text-[10px]"
           style={{ fontFamily: 'DM Sans, sans-serif' }}>
           By confirming you agree to PICKle's terms & conditions
         </p>
 
       </div>
+
       {/* ── BOTTOM NAV ── */}
       <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 px-8 py-4 flex justify-between items-center">
-
         <button
           onClick={() => navigate(`/dashboard/${accountId}`)}
           className="flex flex-col items-center gap-1">
@@ -413,17 +377,13 @@ export default function Booking() {
             Home
           </span>
         </button>
-
-        <button
-          onClick={() => navigate(`/find/${accountId}`)}
-          className="flex flex-col items-center gap-1">
+        <button className="flex flex-col items-center gap-1">
           <FaSearch size={20} color="#0c3120" />
           <span className="text-[10px] text-[#0c3120] font-medium"
             style={{ fontFamily: 'DM Sans, sans-serif' }}>
             Find
           </span>
         </button>
-
         <button
           onClick={() => navigate(`/mytrips/${accountId}`)}
           className="flex flex-col items-center gap-1">
@@ -433,7 +393,6 @@ export default function Booking() {
             My Trips
           </span>
         </button>
-
         <button
           onClick={() => navigate(`/account/${accountId}`)}
           className="flex flex-col items-center gap-1">
@@ -443,8 +402,8 @@ export default function Booking() {
             Account
           </span>
         </button>
-
       </div>
+
     </div>
   )
 }

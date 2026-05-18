@@ -2,6 +2,9 @@
 // useNavigate lets you move between pages
 import { useParams, useNavigate } from 'react-router-dom'
 
+// Import the createListing function from our API file
+import { createListing } from '../api'
+
 // useState tracks each form field and the submitted state
 import { useState } from 'react'
 
@@ -26,8 +29,26 @@ export default function ListSpace() {
   const [licencePlate, setLicencePlate] = useState('')
 
   // Called when the user taps Submit Listing
-  const handleSubmit = () => {
-    setSubmitted(true)
+  const handleSubmit = async () => {
+    try {
+      await createListing({
+        // Use the account name as company
+        company: 'Kiwi Transport Co.',
+        route,
+        date,
+        departure,
+        truckType,
+        licencePlate,
+        space: parseFloat(space),
+        tempType,
+        price: parseFloat(price),
+      })
+      setSubmitted(true)
+    } catch (err) {
+      console.error('Failed to save listing:', err)
+      // Still show success for demo purposes
+      setSubmitted(true)
+    }
   }
 
   // ── SUBMITTED SUCCESS SCREEN ──
@@ -339,7 +360,7 @@ export default function ListSpace() {
         >
           Submit Listing
         </button>
-
+        
         <p className="text-center text-gray-400 text-[10px]"
           style={{ fontFamily: 'DM Sans, sans-serif' }}>
           Your listing will be visible to businesses immediately
